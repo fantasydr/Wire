@@ -21,7 +21,7 @@ namespace Wire.SerializerFactories
         private static bool IsInterface(Type type)
         {
             return type.IsGenericType &&
-                   type.GetGenericTypeDefinition() == typeof(HashSet<>);
+                   type.GetGenericTypeDefinition() == typeof(Wire.Helper.HashSet<>);
         }
 
         public override bool CanDeserialize(Serializer serializer, Type type) => IsInterface(type);
@@ -53,9 +53,9 @@ namespace Wire.SerializerFactories
             return ser;
         }
 
-        private static HashSet<T> ReadHashSet<T>(Stream stream, DeserializerSession session,bool preserveObjectReferences)
+        private static Wire.Helper.HashSet<T> ReadHashSet<T>(Stream stream, DeserializerSession session,bool preserveObjectReferences)
         {
-            var set = new HashSet<T>();
+            var set = new Wire.Helper.HashSet<T>();
             if (preserveObjectReferences)
             {
                 session.TrackDeserializedObject(set);
@@ -69,7 +69,7 @@ namespace Wire.SerializerFactories
             return set;
         }
 
-        private static void WriteHashSet<T>(HashSet<T> set, Stream stream, SerializerSession session, Type elementType,
+        private static void WriteHashSet<T>(Wire.Helper.HashSet<T> set, Stream stream, SerializerSession session, Type elementType,
             ValueSerializer elementSerializer, bool preserveObjectReferences)
         {
             if (preserveObjectReferences)
@@ -80,7 +80,7 @@ namespace Wire.SerializerFactories
             Int32Serializer.WriteValueImpl(stream, set.Count, session);
             foreach (var item in set)
             {
-                stream.WriteObject(item,elementType,elementSerializer, preserveObjectReferences, session);
+                StreamEx.WriteObject(stream, item,elementType,elementSerializer, preserveObjectReferences, session);
             }
         }
     }
