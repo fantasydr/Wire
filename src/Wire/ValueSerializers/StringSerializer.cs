@@ -18,7 +18,8 @@ namespace Wire.ValueSerializers
 
         public static void WriteValueImpl(Stream stream, string s, SerializerSession session)
         {
-            var bytes = NoAllocBitConverter.GetBytes(s, session, out int byteCount);
+            int byteCount = 0;
+            var bytes = NoAllocBitConverter.GetBytes(s, session, out byteCount);
             stream.Write(bytes, 0, byteCount);
         }
 

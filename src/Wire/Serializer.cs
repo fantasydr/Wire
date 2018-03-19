@@ -111,9 +111,9 @@ namespace Wire
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private ValueSerializer GetCustomDeserializer([NotNull] Type type)
         {
-
+            ValueSerializer serializer = null;
             //do we already have a deserializer for this type?
-            if (_deserializers.TryGetValue(type, out ValueSerializer serializer))
+            if (_deserializers.TryGetValue(type, out serializer))
             {
                 return serializer;
             }
