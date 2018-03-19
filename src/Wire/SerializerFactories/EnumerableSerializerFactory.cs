@@ -77,7 +77,7 @@ namespace Wire.SerializerFactories
             var addRange = type.GetMethod("AddRange");
             var add = type.GetMethod("Add");
 
-            int CountGetter(object o) => (int) countProperty.GetValue(o);
+            //int CountGetter(object o) => (int) countProperty.GetValue(o);
 
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
@@ -120,7 +120,7 @@ namespace Wire.SerializerFactories
                 {
                     session.TrackSerializedObject(o);
                 }
-                Int32Serializer.WriteValueImpl(stream, CountGetter(o), session);
+                Int32Serializer.WriteValueImpl(stream, (int)countProperty.GetValue(o, null), session);
                 var enumerable = o as IEnumerable;
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (var value in enumerable)
