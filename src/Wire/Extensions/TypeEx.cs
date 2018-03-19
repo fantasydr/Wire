@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -100,8 +100,8 @@ namespace Wire.Extensions
             return type.IsArray && type.GetArrayRank() == 1 && type.GetElementType().IsWirePrimitive();
         }
 
-        private static readonly ConcurrentDictionary<ByteArrayKey, Type> TypeNameLookup =
-            new ConcurrentDictionary<ByteArrayKey, Type>(ByteArrayKeyComparer.Instance);
+        private static readonly Wire.Helper.Dictionary<ByteArrayKey, Type> TypeNameLookup =
+            new Wire.Helper.Dictionary<ByteArrayKey, Type>(ByteArrayKeyComparer.Instance);
 
         public static byte[] GetTypeManifest(IReadOnlyCollection<byte[]> fieldNames)
         {

@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 #if NET45
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
@@ -28,7 +28,7 @@ namespace Wire.SerializerFactories
         }
 
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
-            ConcurrentDictionary<Type, ValueSerializer> typeMapping)
+            Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
             var serializableSerializer = new ObjectSerializer(type);
             typeMapping.TryAdd(type, serializableSerializer);

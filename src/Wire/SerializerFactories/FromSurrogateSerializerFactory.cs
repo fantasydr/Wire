@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using System.Linq;
 using System.Reflection;
 using Wire.ValueSerializers;
@@ -23,7 +23,7 @@ namespace Wire.SerializerFactories
         }
 
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
-            ConcurrentDictionary<Type, ValueSerializer> typeMapping)
+            Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
             var surrogate =
                 serializer.Options.Surrogates.FirstOrDefault(

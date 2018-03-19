@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -20,13 +20,13 @@ namespace Wire
     {
         private readonly ValueSerializer[] _deserializerLookup = new ValueSerializer[256];
 
-        private readonly ConcurrentDictionary<Type, ValueSerializer> _deserializers =
-            new ConcurrentDictionary<Type, ValueSerializer>();
+        private readonly Wire.Helper.Dictionary<Type, ValueSerializer> _deserializers =
+            new Wire.Helper.Dictionary<Type, ValueSerializer>();
 
         private readonly ValueSerializer[] _knownValueSerializers;
 
-        private readonly ConcurrentDictionary<Type, ValueSerializer> _serializers =
-            new ConcurrentDictionary<Type, ValueSerializer>();
+        private readonly Wire.Helper.Dictionary<Type, ValueSerializer> _serializers =
+            new Wire.Helper.Dictionary<Type, ValueSerializer>();
 
         public readonly ICodeGenerator CodeGenerator = new DefaultCodeGenerator();
         public readonly SerializerOptions Options;
@@ -206,9 +206,9 @@ namespace Wire
 
         public ValueSerializer GetSerializerByType([NotNull] Type type)
         {
-
+            ValueSerializer serializer = null;
             //do we already have a serializer for this type?
-            if (_serializers.TryGetValue(type, out ValueSerializer serializer))
+            if (_serializers.TryGetValue(type, out serializer))
             {
                 return serializer;
             }
@@ -222,9 +222,10 @@ namespace Wire
                 }
             }
 
+            ushort index = 0;
             //none of the above, lets create a POCO object serializer
             serializer = new ObjectSerializer(type);
-            if (Options.KnownTypesDict.TryGetValue(type, out ushort index))
+            if (Options.KnownTypesDict.TryGetValue(type, out index))
             {
                 var wrapper = new KnownTypeObjectSerializer((ObjectSerializer)serializer, index);
                 if (!_serializers.TryAdd(type, wrapper))

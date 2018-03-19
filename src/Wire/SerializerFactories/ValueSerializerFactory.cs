@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using Wire.ValueSerializers;
 
 namespace Wire.SerializerFactories
@@ -16,6 +16,6 @@ namespace Wire.SerializerFactories
         public abstract bool CanDeserialize(Serializer serializer, Type type);
 
         public abstract ValueSerializer BuildSerializer(Serializer serializer, Type type,
-            ConcurrentDictionary<Type, ValueSerializer> typeMapping);
+            Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping);
     }
 }

@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 using Wire.Extensions;
@@ -26,7 +26,7 @@ namespace Wire.SerializerFactories
         }
 
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
-            ConcurrentDictionary<Type, ValueSerializer> typeMapping)
+            Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
             var os = new ObjectSerializer(type);
             typeMapping.TryAdd(type, os);

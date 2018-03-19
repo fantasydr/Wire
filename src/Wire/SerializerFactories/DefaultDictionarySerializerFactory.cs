@@ -6,7 +6,7 @@
 
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using Wire.Extensions;
@@ -26,7 +26,7 @@ namespace Wire.SerializerFactories
         public override bool CanDeserialize(Serializer serializer, Type type) => IsDictionary(type);
 
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
-            ConcurrentDictionary<Type, ValueSerializer> typeMapping)
+            Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
             var ser = new ObjectSerializer(type);
             typeMapping.TryAdd(type, ser);

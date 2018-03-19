@@ -55,6 +55,7 @@
     <Compile Include="Extensions\StreamEx.cs" />
     <Compile Include="Extensions\StringEx.cs" />
     <Compile Include="Extensions\TypeEx.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="ICodeGenerator.cs" />
     <Compile Include="Internal\Annotations.cs" />
     <Compile Include="Internal\ByteArrayKey.cs" />

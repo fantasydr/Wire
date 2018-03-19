@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -27,7 +27,7 @@ namespace Wire.SerializerFactories
         public override bool CanDeserialize(Serializer serializer, Type type) => IsInterface(type);
 
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
-            ConcurrentDictionary<Type, ValueSerializer> typeMapping)
+            Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
             var ser = new ObjectSerializer(type);

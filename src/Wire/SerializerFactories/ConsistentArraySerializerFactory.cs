@@ -5,7 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
-using System.Collections.Concurrent;
+// using System.Collections.Concurrent;
 using Wire.Extensions;
 using Wire.ValueSerializers;
 
@@ -24,7 +24,7 @@ namespace Wire.SerializerFactories
         }
 
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
-            ConcurrentDictionary<Type, ValueSerializer> typeMapping)
+            Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
             var res = ConsistentArraySerializer.Instance;
             typeMapping.TryAdd(type, res);
