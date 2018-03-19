@@ -118,6 +118,27 @@
     <Compile Include="ValueSerializers\UInt64Serializer.cs" />
     <Compile Include="ValueSerializers\UnsupportedTypeSerializer.cs" />
     <Compile Include="ValueSerializers\ValueSerializer.cs" />
+	<Compile Include="LINQ1one\Internal\Definitions\Exceptions.cs" />
+    <Compile Include="LINQ1one\Internal\Definitions\Parameters.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\Buffer\Buffer.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\EmptyEnumerable\EmptyEnumerable.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\Grouping\Grouping.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\NullableKeyDictionary\NullableKeyDictionary.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\OrderedEnumerable\CompositeKey.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\OrderedEnumerable\DescendingComparer.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\OrderedEnumerable\OrderedEnumerable.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\OrderedEnumerable\QuickSorter\KeyIndex.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\OrderedEnumerable\QuickSorter\QuickSorter.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\OrderedEnumerable\QuickSorter\StableQuickSorter.cs" />
+    <Compile Include="LINQ1one\Internal\Infrastructure\UniqueCollection\UniqueCollection.cs" />
+    <Compile Include="LINQ1one\System\CompilerServices\ExtensionAttribute.cs" />
+    <Compile Include="LINQ1one\System\Delegates\Delegates.cs" />
+    <Compile Include="LINQ1one\System\Linq\DataStructures\Lookup.cs" />
+    <Compile Include="LINQ1one\System\Linq\DataStructures\Interface\IGrouping.cs" />
+    <Compile Include="LINQ1one\System\Linq\DataStructures\Interface\ILookup.cs" />
+    <Compile Include="LINQ1one\System\Linq\DataStructures\Interface\IOrderedEnumerable.cs" />
+    <Compile Include="LINQ1one\System\Linq\DeferredExecution.cs" />
+    <Compile Include="LINQ1one\System\Linq\ImmediateExecution.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
