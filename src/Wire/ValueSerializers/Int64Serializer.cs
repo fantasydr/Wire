@@ -16,7 +16,7 @@ namespace Wire.ValueSerializers
         public const int Size = sizeof(long);
         public static readonly Int64Serializer Instance = new Int64Serializer();
 
-        public Int64Serializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public Int64Serializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

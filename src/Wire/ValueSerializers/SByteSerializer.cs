@@ -13,7 +13,7 @@ namespace Wire.ValueSerializers
         public const byte Manifest = 20;
         public static readonly SByteSerializer Instance = new SByteSerializer();
 
-        public SByteSerializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public SByteSerializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

@@ -14,7 +14,7 @@ namespace Wire.ValueSerializers
         public static readonly BoolSerializer Instance = new BoolSerializer();
 
         public BoolSerializer() :
-            base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+            base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

@@ -16,7 +16,7 @@ namespace Wire.ValueSerializers
         public const int Size = sizeof(ushort);
         public static readonly UInt16Serializer Instance = new UInt16Serializer();
 
-        public UInt16Serializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public UInt16Serializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

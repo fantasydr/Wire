@@ -17,7 +17,7 @@ namespace Wire.ValueSerializers
         public static readonly Int32Serializer Instance = new Int32Serializer();
 
         public Int32Serializer()
-            : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+            : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

@@ -16,7 +16,7 @@ namespace Wire.ValueSerializers
         public const int Size = sizeof(long) + sizeof(byte);
         public static readonly DateTimeSerializer Instance = new DateTimeSerializer();
 
-        public DateTimeSerializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public DateTimeSerializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

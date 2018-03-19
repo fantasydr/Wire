@@ -16,7 +16,7 @@ namespace Wire.ValueSerializers
         public const int Size = sizeof(char);
         public static readonly CharSerializer Instance = new CharSerializer();
 
-        public CharSerializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public CharSerializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

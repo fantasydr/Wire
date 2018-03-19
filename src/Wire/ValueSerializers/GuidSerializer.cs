@@ -15,7 +15,7 @@ namespace Wire.ValueSerializers
         public const byte Manifest = 11;
         public static readonly GuidSerializer Instance = new GuidSerializer();
 
-        public GuidSerializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public GuidSerializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

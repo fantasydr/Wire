@@ -16,7 +16,7 @@ namespace Wire.ValueSerializers
         public const int Size = sizeof(ulong);
         public static readonly UInt64Serializer Instance = new UInt64Serializer();
 
-        public UInt64Serializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public UInt64Serializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

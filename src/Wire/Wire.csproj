@@ -42,14 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Compilation\Compiler.cs" />
-    <Compile Include="Compilation\DefaultCodeGenerator.cs" />
-    <Compile Include="Compilation\ExpressionEx.cs" />
-    <Compile Include="Compilation\ICompiler.cs" />
-    <Compile Include="Compilation\IlBuilder.cs" />
-    <Compile Include="Compilation\IlCompiler.cs" />
-    <Compile Include="Compilation\IlCompilerContext.cs" />
-    <Compile Include="Compilation\IlExpression.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="DeserializeSession.cs" />
     <Compile Include="Extensions\ReflectionEx.cs" />
@@ -118,7 +110,7 @@
     <Compile Include="ValueSerializers\UInt64Serializer.cs" />
     <Compile Include="ValueSerializers\UnsupportedTypeSerializer.cs" />
     <Compile Include="ValueSerializers\ValueSerializer.cs" />
-	<Compile Include="LINQ1one\Internal\Definitions\Exceptions.cs" />
+    <Compile Include="LINQ1one\Internal\Definitions\Exceptions.cs" />
     <Compile Include="LINQ1one\Internal\Definitions\Parameters.cs" />
     <Compile Include="LINQ1one\Internal\Infrastructure\Buffer\Buffer.cs" />
     <Compile Include="LINQ1one\Internal\Infrastructure\EmptyEnumerable\EmptyEnumerable.cs" />

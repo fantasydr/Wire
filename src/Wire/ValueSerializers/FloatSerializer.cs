@@ -16,7 +16,7 @@ namespace Wire.ValueSerializers
         public const int Size = sizeof(float);
         public static readonly FloatSerializer Instance = new FloatSerializer();
 
-        public FloatSerializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public FloatSerializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 

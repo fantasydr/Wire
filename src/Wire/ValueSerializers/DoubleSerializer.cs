@@ -16,7 +16,7 @@ namespace Wire.ValueSerializers
         public const int Size = sizeof(double);
         public static readonly DoubleSerializer Instance = new DoubleSerializer();
 
-        public DoubleSerializer() : base(Manifest, () => WriteValueImpl, () => ReadValueImpl)
+        public DoubleSerializer() : base(Manifest, WriteValueImpl, ReadValueImpl)
         {
         }
 
