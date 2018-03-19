@@ -69,18 +69,18 @@ namespace Wire.SerializerFactories
             var readGeneric = GetType().GetTypeInfo().GetMethod(nameof(ReadValues), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
             var writeGeneric = GetType().GetTypeInfo().GetMethod(nameof(WriteValues), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 //Stream stream, DeserializerSession session, bool preserveObjectReferences
-                var res = readGeneric.Invoke(null, new object[] {stream, session, preserveObjectReferences});
+                var res = readGeneric.Invoke(null, new object[] { stream, session, preserveObjectReferences });
                 return res;
-            }
+            };
 
-            void Writer(Stream stream, object arr, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object arr, SerializerSession session)
             {
                 //T[] array, Stream stream, Type elementType, ValueSerializer elementSerializer, SerializerSession session, bool preserveObjectReferences
-                writeGeneric.Invoke(null, new[] {arr, stream, elementType, elementSerializer, session, preserveObjectReferences});
-            }
+                writeGeneric.Invoke(null, new[] { arr, stream, elementType, elementSerializer, session, preserveObjectReferences });
+            };
 
             arraySerializer.Initialize(Reader, Writer);
             typeMapping.TryAdd(type, arraySerializer);

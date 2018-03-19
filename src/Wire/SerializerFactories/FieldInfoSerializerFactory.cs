@@ -31,7 +31,7 @@ namespace Wire.SerializerFactories
             var os = new ObjectSerializer(type);
             typeMapping.TryAdd(type, os);
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var name = stream.ReadString(session);
                 var owner = stream.ReadObject(session) as Type;
@@ -43,16 +43,16 @@ namespace Wire.SerializerFactories
 #else
                 return null;
 #endif
-            }
+            };
 
-            void Writer(Stream stream, object obj, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object obj, SerializerSession session)
             {
-                var field = (FieldInfo) obj;
+                var field = (FieldInfo)obj;
                 var name = field.Name;
                 var owner = field.DeclaringType;
                 StringSerializer.WriteValueImpl(stream, name, session);
                 stream.WriteObjectWithManifest(owner, session);
-            }
+            };
 
             os.Initialize(Reader, Writer);
 

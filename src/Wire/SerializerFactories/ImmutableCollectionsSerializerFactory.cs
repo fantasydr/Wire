@@ -75,13 +75,13 @@ namespace Wire.SerializerFactories
                 .First(methodInfo => methodInfo.Name == "CreateRange" && methodInfo.GetParameters().Length == 1)
                 .MakeGenericMethod(genericTypes);
 
-            void Writer(Stream stream, object o, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object o, SerializerSession session)
             {
                 var enumerable = o as ICollection;
                 if (enumerable == null)
                 {
                     // object can be IEnumerable but not ICollection i.e. ImmutableQueue
-                    var e = (IEnumerable) o;
+                    var e = (IEnumerable)o;
                     var list = e.Cast<object>().ToList(); //
 
                     enumerable = list;
@@ -95,9 +95,9 @@ namespace Wire.SerializerFactories
                 {
                     session.TrackSerializedObject(o);
                 }
-            }
+            };
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var count = stream.ReadInt32(session);
                 var items = Array.CreateInstance(elementType, count);
@@ -107,13 +107,13 @@ namespace Wire.SerializerFactories
                     items.SetValue(value, i);
                 }
 
-                var instance = createRange.Invoke(null, new object[] {items});
+                var instance = createRange.Invoke(null, new object[] { items });
                 if (preserveObjectReferences)
                 {
                     session.TrackDeserializedObject(instance);
                 }
                 return instance;
-            }
+            };
 
             x.Initialize(Reader, Writer);
             return x;

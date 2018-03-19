@@ -29,7 +29,7 @@ namespace Wire.SerializerFactories
             typeMapping.TryAdd(type, ser);
             var elementSerializer = serializer.GetSerializerByType(typeof(DictionaryEntry));
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var instance = Activator.CreateInstance(type) as IDictionary<string, object>;
 
@@ -40,13 +40,13 @@ namespace Wire.SerializerFactories
                 var count = stream.ReadInt32(session);
                 for (var i = 0; i < count; i++)
                 {
-                    var entry = (KeyValuePair<string, object>) stream.ReadObject(session);
+                    var entry = (KeyValuePair<string, object>)stream.ReadObject(session);
                     instance.Add(entry);
                 }
                 return instance;
-            }
+            };
 
-            void Writer(Stream stream, object obj, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object obj, SerializerSession session)
             {
                 if (preserveObjectReferences)
                 {
@@ -60,7 +60,7 @@ namespace Wire.SerializerFactories
                     stream.WriteObject(item, typeof(DictionaryEntry), elementSerializer, serializer.Options.PreserveObjectReferences, session);
                     // elementSerializer.WriteValue(stream,item,session);
                 }
-            }
+            };
 
             ser.Initialize(Reader, Writer);
 

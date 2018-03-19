@@ -37,16 +37,16 @@ namespace Wire.SerializerFactories
             var readGeneric = GetType().GetTypeInfo().GetMethod(nameof(ReadHashSet), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
             var writeGeneric = GetType().GetTypeInfo().GetMethod(nameof(WriteHashSet), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
-                var res = readGeneric.Invoke(null, new object[] {stream, session, preserveObjectReferences});
+                var res = readGeneric.Invoke(null, new object[] { stream, session, preserveObjectReferences });
                 return res;
-            }
+            };
 
-            void Writer(Stream stream, object obj, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object obj, SerializerSession session)
             {
-                writeGeneric.Invoke(null, new[] {obj, stream, session, elementType, elementSerializer, preserveObjectReferences});
-            }
+                writeGeneric.Invoke(null, new[] { obj, stream, session, elementType, elementSerializer, preserveObjectReferences });
+            };
 
             ser.Initialize(Reader, Writer);
 

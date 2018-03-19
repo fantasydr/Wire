@@ -80,7 +80,7 @@ namespace Wire.SerializerFactories
 
             int CountGetter(object o) => (int) countProperty.GetValue(o);
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var instance = Activator.CreateInstance(type);
                 if (preserveObjectReferences)
@@ -100,7 +100,7 @@ namespace Wire.SerializerFactories
                     }
                     //HACK: this needs to be fixed, codegenerated or whatever
 
-                    addRange.Invoke(instance, new object[] {items});
+                    addRange.Invoke(instance, new object[] { items });
                     return instance;
                 }
                 if (add != null)
@@ -108,14 +108,14 @@ namespace Wire.SerializerFactories
                     for (var i = 0; i < count; i++)
                     {
                         var value = stream.ReadObject(session);
-                        add.Invoke(instance, new[] {value});
+                        add.Invoke(instance, new[] { value });
                     }
                 }
 
                 return instance;
-            }
+            };
 
-            void Writer(Stream stream, object o, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object o, SerializerSession session)
             {
                 if (preserveObjectReferences)
                 {
@@ -128,7 +128,7 @@ namespace Wire.SerializerFactories
                 {
                     stream.WriteObject(value, elementType, elementSerializer, preserveObjectReferences, session);
                 }
-            }
+            };
 
             x.Initialize(Reader, Writer);
             return x;

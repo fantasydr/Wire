@@ -80,7 +80,7 @@ namespace Wire.SerializerFactories
             var arrSerializer = serializer.GetSerializerByType(arrType);
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
 
-            void Writer(Stream stream, object o, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object o, SerializerSession session)
             {
                 var arr = toArrayCompiled(o);
                 arrSerializer.WriteValue(stream, arr, session);
@@ -88,14 +88,14 @@ namespace Wire.SerializerFactories
                 {
                     session.TrackSerializedObject(o);
                 }
-            }
+            };
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var arr = arrSerializer.ReadValue(stream, session);
                 var res = ofArrayCompiled(arr);
                 return res;
-            }
+            };
 
             x.Initialize(Reader, Writer);
             return x;

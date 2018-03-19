@@ -33,10 +33,10 @@ namespace Wire.SerializerFactories
             var elementSerializer = serializer.GetSerializerByType(typeof(DictionaryEntry));
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var count = stream.ReadInt32(session);
-                var instance = (IDictionary) Activator.CreateInstance(type, count);
+                var instance = (IDictionary)Activator.CreateInstance(type, count);
                 if (preserveObjectReferences)
                 {
                     session.TrackDeserializedObject(instance);
@@ -44,13 +44,13 @@ namespace Wire.SerializerFactories
 
                 for (var i = 0; i < count; i++)
                 {
-                    var entry = (DictionaryEntry) stream.ReadObject(session);
+                    var entry = (DictionaryEntry)stream.ReadObject(session);
                     instance.Add(entry.Key, entry.Value);
                 }
                 return instance;
-            }
+            };
 
-            void Writer(Stream stream, object obj, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object obj, SerializerSession session)
             {
                 if (preserveObjectReferences)
                 {
@@ -64,7 +64,7 @@ namespace Wire.SerializerFactories
                     stream.WriteObject(item, typeof(DictionaryEntry), elementSerializer, serializer.Options.PreserveObjectReferences, session);
                     // elementSerializer.WriteValue(stream,item,session);
                 }
-            }
+            };
 
             ser.Initialize(Reader, Writer);
 

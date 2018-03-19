@@ -42,7 +42,7 @@ namespace Wire.SerializerFactories
             typeMapping.TryAdd(type, ser);
             var elementSerializer = serializer.GetSerializerByType(typeof(DictionaryEntry));
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 throw new NotSupportedException("Generic IDictionary<TKey,TValue> are not yet supported");
 #pragma warning disable CS0162 // Unreachable code detected
@@ -56,14 +56,14 @@ namespace Wire.SerializerFactories
                 var entries = new DictionaryEntry[count];
                 for (var i = 0; i < count; i++)
                 {
-                    var entry = (DictionaryEntry) stream.ReadObject(session);
+                    var entry = (DictionaryEntry)stream.ReadObject(session);
                     entries[i] = entry;
                 }
                 //TODO: populate dictionary
                 return instance;
-            }
+            };
 
-            void Writer(Stream stream, object obj, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object obj, SerializerSession session)
             {
                 if (preserveObjectReferences)
                 {
@@ -77,7 +77,7 @@ namespace Wire.SerializerFactories
                     stream.WriteObject(item, typeof(DictionaryEntry), elementSerializer, serializer.Options.PreserveObjectReferences, session);
                     // elementSerializer.WriteValue(stream,item,session);
                 }
-            }
+            };
 
             ser.Initialize(Reader, Writer);
 

@@ -33,22 +33,22 @@ namespace Wire.SerializerFactories
             var methodInfoSerializer = serializer.GetSerializerByType(typeof(MethodInfo));
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var target = stream.ReadObject(session);
-                var method = (MethodInfo) stream.ReadObject(session);
+                var method = (MethodInfo)stream.ReadObject(session);
                 var del = method.CreateDelegate(type, target);
                 return del;
-            }
+            };
 
-            void Writer(Stream stream, object value, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object value, SerializerSession session)
             {
-                var d = (Delegate) value;
+                var d = (Delegate)value;
                 var method = d.GetMethodInfo();
                 stream.WriteObjectWithManifest(d.Target, session);
                 //less lookups, slightly faster
                 stream.WriteObject(method, type, methodInfoSerializer, preserveObjectReferences, session);
-            }
+            };
 
             os.Initialize(Reader, Writer);
             return os;

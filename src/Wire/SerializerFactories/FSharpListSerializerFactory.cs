@@ -63,7 +63,7 @@ namespace Wire.SerializerFactories
             var toArrayCompiled = CompileToDelegate(toArrayConcrete, type);
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
 
-            void Writer(Stream stream, object o, SerializerSession session)
+            ObjectWriter Writer = delegate (Stream stream, object o, SerializerSession session)
             {
                 var arr = toArrayCompiled(o);
                 var arrSerializer = serializer.GetSerializerByType(arrType);
@@ -72,19 +72,19 @@ namespace Wire.SerializerFactories
                 {
                     session.TrackSerializedObject(o);
                 }
-            }
+            };
 
-            object Reader(Stream stream, DeserializerSession session)
+            ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var arrSerializer = serializer.GetSerializerByType(arrType);
-                var items = (Array) arrSerializer.ReadValue(stream, session);
+                var items = (Array)arrSerializer.ReadValue(stream, session);
                 var res = ofArrayCompiled(items);
                 if (preserveObjectReferences)
                 {
                     session.TrackDeserializedObject(res);
                 }
                 return res;
-            }
+            };
 
             x.Initialize(Reader, Writer);
             return x;
