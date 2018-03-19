@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26430.12
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{2F3D4EC4-3A41-48C2-9DEA-0510B0FF89B4}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{C75E620D-91F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{04F7E5CA-8978-48CF-A40D-084FB5B84B17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wire", "src\Wire\Wire.csproj", "{0E200D3D-224F-454D-80A9-CCC6CF1E577C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Wire", "src\Wire\Wire.csproj", "{0E200D3D-224F-454D-80A9-CCC6CF1E577C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Wire.Tests", "tests\Wire.Tests\Wire.Tests.csproj", "{1BBE5B8A-41E5-4A9E-A41E-46236EEF56E2}"
 EndProject
