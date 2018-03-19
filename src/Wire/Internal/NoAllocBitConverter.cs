@@ -73,7 +73,7 @@ namespace Wire.Internal
             GetBytes(*(long*) &value, bytes);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal static unsafe byte[] GetBytes(string str, SerializerSession session, out int byteCount)
         {
             //if first byte is 0 = null

@@ -108,7 +108,7 @@ namespace Wire
             _serializers.TryAdd(typeof(T), instance);
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private ValueSerializer GetCustomDeserializer([NotNull] Type type)
         {
             ValueSerializer serializer = null;
@@ -270,7 +270,7 @@ namespace Wire
             //add it to the serializer lookup in case of recursive serialization
         }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        // [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public ValueSerializer GetDeserializerByManifest([NotNull] Stream stream, [NotNull] DeserializerSession session)
         {
             var first = stream.ReadByte();

@@ -63,7 +63,7 @@ namespace Wire.SerializerFactories
             var count = StreamEx.ReadInt32(stream, session);
             for (var i = 0; i < count; i++)
             {
-                var item = (T)stream.ReadObject(session);
+                var item = (T)StreamEx.ReadObject(stream, session);
                 set.Add(item);
             }
             return set;
