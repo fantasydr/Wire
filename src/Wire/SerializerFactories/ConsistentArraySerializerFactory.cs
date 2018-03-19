@@ -15,7 +15,7 @@ namespace Wire.SerializerFactories
     {
         public override bool CanSerialize(Serializer serializer, Type type)
         {
-            return type.IsOneDimensionalPrimitiveArray();
+            return TypeEx.IsOneDimensionalPrimitiveArray(type);
         }
 
         public override bool CanDeserialize(Serializer serializer, Type type)

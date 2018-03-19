@@ -296,7 +296,7 @@ namespace Wire
                 }
                 case ObjectSerializer.ManifestIndex:
                 {
-                    var typeId = (int) stream.ReadUInt16(session);
+                    var typeId = (int) StreamEx.ReadUInt16(stream, session);
                     if (typeId < _knownValueSerializers.Length)
                     {
                         return _knownValueSerializers[typeId];

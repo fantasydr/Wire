@@ -12,7 +12,7 @@ namespace Wire.Extensions
     internal static class StringEx
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        internal static byte[] ToUtf8Bytes(this string str)
+        internal static byte[] ToUtf8Bytes(string str)
         {
             return NoAllocBitConverter.Utf8.GetBytes(str);
         }

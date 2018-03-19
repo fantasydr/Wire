@@ -21,16 +21,16 @@ namespace Wire.ValueSerializers
             //read the element type
             var elementType = elementSerializer.GetElementType();
             //get the element type serializer
-            var length = stream.ReadInt32(session);
+            var length = StreamEx.ReadInt32(stream, session);
             var array = Array.CreateInstance(elementType, length); //create the array
             if (session.Serializer.Options.PreserveObjectReferences)
             {
                 session.TrackDeserializedObject(array);
             }
 
-            if (elementType.IsFixedSizeType())
+            if (TypeEx.IsFixedSizeType(elementType))
             {
-                var size = elementType.GetTypeSize();
+                var size = TypeEx.GetTypeSize(elementType);
                 var totalSize = size*length;
                 var buffer = session.GetBuffer(totalSize);
                 stream.Read(buffer, 0, totalSize);
@@ -79,12 +79,12 @@ namespace Wire.ValueSerializers
             SerializerSession session)
         {
             Int32Serializer.WriteValueImpl(stream, array.Length, session);
-            if (typeof(T).IsFixedSizeType())
+            if (TypeEx.IsFixedSizeType(typeof(T)))
             {
-                var size = typeof(T).GetTypeSize();
+                var size = TypeEx.GetTypeSize(typeof(T));
                 var result = new byte[array.Length*size];
                 Buffer.BlockCopy(array, 0, result, 0, result.Length);
-                stream.Write(result);
+                StreamEx.Write(stream, result);
             }
             else
             {

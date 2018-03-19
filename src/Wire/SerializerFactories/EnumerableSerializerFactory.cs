@@ -87,7 +87,7 @@ namespace Wire.SerializerFactories
                     session.TrackDeserializedObject(instance);
                 }
 
-                var count = stream.ReadInt32(session);
+                var count = StreamEx.ReadInt32(stream, session);
 
                 if (addRange != null)
                 {

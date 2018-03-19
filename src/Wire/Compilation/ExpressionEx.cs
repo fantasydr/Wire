@@ -13,7 +13,7 @@ namespace Wire.Compilation
 {
     public static class ExpressionEx
     {
-        public static ConstantExpression ToConstant(this object self)
+        public static ConstantExpression ToConstant(object self)
         {
             return Expression.Constant(self);
         }
@@ -37,7 +37,7 @@ namespace Wire.Compilation
             }
 #endif
             var emptyObjectMethod = typeof(TypeEx).GetMethod("TypeEx.GetEmptyObject");
-            var emptyObject = Expression.Call(null, emptyObjectMethod, type.ToConstant());
+            var emptyObject = Expression.Call(null, emptyObjectMethod, ExpressionEx.ToConstant(type));
 
             return emptyObject;
         }

@@ -64,7 +64,7 @@ namespace Wire.Compilation
 
         public int Constant(object value)
         {
-            var constant = value.ToConstant();
+            var constant = ExpressionEx.ToConstant(value);
             _expressions.Add(constant);
             return _expressions.Count - 1;
         }

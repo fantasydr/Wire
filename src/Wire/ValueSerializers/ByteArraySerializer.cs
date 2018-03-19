@@ -23,7 +23,7 @@ namespace Wire.ValueSerializers
         public override void WriteValue(Stream stream, object value, SerializerSession session)
         {
             var bytes = (byte[]) value;
-            stream.WriteLengthEncodedByteArray(bytes, session);
+            StreamEx.WriteLengthEncodedByteArray(stream, bytes, session);
 
             if (session.Serializer.Options.PreserveObjectReferences)
             {
@@ -33,7 +33,7 @@ namespace Wire.ValueSerializers
 
         public override object ReadValue(Stream stream, DeserializerSession session)
         {
-            var res = stream.ReadLengthEncodedByteArray(session);
+            var res = StreamEx.ReadLengthEncodedByteArray(stream, session);
             if (session.Serializer.Options.PreserveObjectReferences)
             {
                 session.TrackDeserializedObject(res);

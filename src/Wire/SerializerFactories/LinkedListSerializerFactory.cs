@@ -43,7 +43,7 @@ namespace Wire.SerializerFactories
 
         private static object ReadValues<T>(Stream stream, DeserializerSession session, bool preserveObjectReferences)
         {
-            var length = stream.ReadInt32(session);
+            var length = StreamEx.ReadInt32(stream, session);
             var llist = new LinkedList<T>();
             if (preserveObjectReferences)
             {

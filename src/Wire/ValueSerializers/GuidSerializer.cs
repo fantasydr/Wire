@@ -22,7 +22,7 @@ namespace Wire.ValueSerializers
         public static void WriteValueImpl(Stream stream, Guid g)
         {
             var bytes = g.ToByteArray();
-            stream.Write(bytes);
+            StreamEx.Write(stream, bytes);
         }
 
         public static Guid ReadValueImpl(Stream stream)

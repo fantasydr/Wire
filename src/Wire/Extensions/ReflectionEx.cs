@@ -24,7 +24,7 @@ namespace Wire.Extensions
     {
         public static readonly Assembly CoreAssembly = typeof(int).Assembly;
 
-        public static FieldInfo[] GetFieldInfosForType(this Type type)
+        public static FieldInfo[] GetFieldInfosForType(Type type)
         {
             if (type == null)
             {

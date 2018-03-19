@@ -32,13 +32,13 @@ namespace Wire.ValueSerializers
                 throw new ArgumentNullException("type");
 
             //TODO: remove version info
-            var typeName = type.GetShortAssemblyQualifiedName();
+            var typeName = TypeEx.GetShortAssemblyQualifiedName(type);
             // ReSharper disable once PossibleNullReferenceException
             // ReSharper disable once AssignNullToNotNullAttribute
-            var typeNameBytes = typeName.ToUtf8Bytes();
+            var typeNameBytes = StringEx.ToUtf8Bytes(typeName);
 
-            var fields = type.GetFieldInfosForType();
-            var fieldNames = fields.Select(field => field.Name.ToUtf8Bytes()).ToList();
+            var fields = ReflectionEx.GetFieldInfosForType(type);
+            var fieldNames = fields.Select(field => StringEx.ToUtf8Bytes(field.Name)).ToList();
             var versionInfo = TypeEx.GetTypeManifest(fieldNames);
 
             //precalculate the entire manifest for this serializer
@@ -89,7 +89,7 @@ namespace Wire.ValueSerializers
                     ? _manifestWithVersionInfo
                     : _manifest;
 
-                stream.Write(manifestToWrite);
+                StreamEx.Write(stream, manifestToWrite);
             }
             else
             {

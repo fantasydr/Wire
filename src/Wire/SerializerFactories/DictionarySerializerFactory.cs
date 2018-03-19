@@ -51,7 +51,7 @@ namespace Wire.SerializerFactories
                 {
                     session.TrackDeserializedObject(instance);
                 }
-                var count = stream.ReadInt32(session);
+                var count = StreamEx.ReadInt32(stream, session);
                 var entries = new DictionaryEntry[count];
                 for (var i = 0; i < count; i++)
                 {

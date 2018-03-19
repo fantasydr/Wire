@@ -24,7 +24,7 @@ namespace Wire.ValueSerializers
             }
             else
             {
-                stream.Write(new[] { ObjectSerializer.ManifestIndex });
+                StreamEx.Write(stream, new[] { ObjectSerializer.ManifestIndex });
                 UInt16Serializer.WriteValueImpl(stream, typeIdentifier, session);
             }
         }
@@ -51,7 +51,7 @@ namespace Wire.ValueSerializers
                         session.TrackSerializedObject(type);
                     }
                     //type was not written before, add it to the tacked object list
-                    var name = type.GetShortAssemblyQualifiedName();
+                    var name = TypeEx.GetShortAssemblyQualifiedName(type);
                     StringSerializer.WriteValueImpl(stream, name, session);
                 }
             }
@@ -59,7 +59,7 @@ namespace Wire.ValueSerializers
 
         public override object ReadValue(Stream stream, DeserializerSession session)
         {
-            var shortname = stream.ReadString(session);
+            var shortname = StreamEx.ReadString(stream, session);
             if (shortname == null)
             {
                 return null;

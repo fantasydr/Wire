@@ -12,7 +12,7 @@ namespace Wire.Extensions
 {
     public static class StreamEx
     {
-        public static uint ReadVarint32(this Stream stream)
+        public static uint ReadVarint32(Stream stream)
         {
             var result = 0;
             var offset = 0;
@@ -36,7 +36,7 @@ namespace Wire.Extensions
             throw new InvalidDataException();
         }
 
-        public static void WriteVarint32(this Stream stream, uint value)
+        public static void WriteVarint32(Stream stream, uint value)
         {
             for (; value >= 0x80u; value >>= 7)
             {
@@ -46,7 +46,7 @@ namespace Wire.Extensions
             stream.WriteByte((byte) value);
         }
 
-        public static ulong ReadVarint64(this Stream stream)
+        public static ulong ReadVarint64(Stream stream)
         {
             long result = 0;
             var offset = 0;
@@ -70,7 +70,7 @@ namespace Wire.Extensions
             throw new InvalidDataException();
         }
 
-        public static void WriteVarint64(this Stream stream, ulong value)
+        public static void WriteVarint64(Stream stream, ulong value)
         {
             for (; value >= 0x80u; value >>= 7)
             {
@@ -80,7 +80,7 @@ namespace Wire.Extensions
             stream.WriteByte((byte) value);
         }
 
-        public static uint ReadUInt16(this Stream self, DeserializerSession session)
+        public static uint ReadUInt16(Stream self, DeserializerSession session)
         {
             var buffer = session.GetBuffer(2);
             self.Read(buffer, 0, 2);
@@ -88,7 +88,7 @@ namespace Wire.Extensions
             return res;
         }
 
-        public static int ReadInt32(this Stream self, DeserializerSession session)
+        public static int ReadInt32(Stream self, DeserializerSession session)
         {
             var buffer = session.GetBuffer(4);
             self.Read(buffer, 0, 4);
@@ -96,26 +96,26 @@ namespace Wire.Extensions
             return res;
         }
 
-        public static byte[] ReadLengthEncodedByteArray(this Stream self, DeserializerSession session)
+        public static byte[] ReadLengthEncodedByteArray(Stream self, DeserializerSession session)
         {
-            var length = self.ReadInt32(session);
+            var length = StreamEx.ReadInt32(self, session);
             var buffer = new byte[length];
             self.Read(buffer, 0, length);
             return buffer;
         }
 
-        public static void WriteLengthEncodedByteArray(this Stream self, byte[] bytes, SerializerSession session)
+        public static void WriteLengthEncodedByteArray(Stream self, byte[] bytes, SerializerSession session)
         {
             Int32Serializer.WriteValueImpl(self, bytes.Length, session);
             self.Write(bytes, 0, bytes.Length);
         }
 
-        public static void Write(this Stream self, byte[] bytes)
+        public static void Write(Stream self, byte[] bytes)
         {
             self.Write(bytes, 0, bytes.Length);
         }
 
-        public static void WriteObjectWithManifest(this Stream stream, object value, SerializerSession session)
+        public static void WriteObjectWithManifest(Stream stream, object value, SerializerSession session)
         {
             if (value == null) //value is null
             {
@@ -141,7 +141,7 @@ namespace Wire.Extensions
             }
         }
 
-        public static void WriteObject(this Stream stream, object value, Type valueType, ValueSerializer valueSerializer,
+        public static void WriteObject(Stream stream, object value, Type valueType, ValueSerializer valueSerializer,
             bool preserveObjectReferences, SerializerSession session)
         {
             if (value == null) //value is null
@@ -174,14 +174,14 @@ namespace Wire.Extensions
             }
         }
 
-        public static object ReadObject(this Stream stream, DeserializerSession session)
+        public static object ReadObject(Stream stream, DeserializerSession session)
         {
             var s = session.Serializer.GetDeserializerByManifest(stream, session);
             var value = s.ReadValue(stream, session); //read the element value
             return value;
         }
 
-        public static string ReadString(this Stream stream, DeserializerSession session)
+        public static string ReadString(Stream stream, DeserializerSession session)
         {
             var length = stream.ReadByte();
             switch (length)
@@ -189,7 +189,7 @@ namespace Wire.Extensions
                 case 0:
                     return null;
                 case 255:
-                    length = stream.ReadInt32(session);
+                    length = StreamEx.ReadInt32(stream, session);
                     break;
                 default:
                     length--;

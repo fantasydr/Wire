@@ -27,7 +27,7 @@ namespace Wire.ValueSerializers
 
         public override object ReadValue(Stream stream, DeserializerSession session)
         {
-            var id = stream.ReadInt32(session);
+            var id = StreamEx.ReadInt32(stream, session);
             var obj = session.GetDeserializedObject(id);
             return obj;
         }

@@ -47,7 +47,7 @@ namespace Wire.Extensions
         public static readonly Type TypeType = typeof(Type);
         public static readonly Type RuntimeType = Type.GetType("System.RuntimeType");
 
-        public static bool IsWirePrimitive(this Type type)
+        public static bool IsWirePrimitive(Type type)
         {
             return type == Int32Type ||
                    type == Int64Type ||
@@ -77,25 +77,25 @@ namespace Wire.Extensions
                 ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
                 ?.CreateDelegate(typeof(Func<Type, object>));
 
-        public static object GetEmptyObject(this Type type)
+        public static object GetEmptyObject(Type type)
         {
             return getUninitializedObjectDelegate(type);
         }
 #else
-        public static object GetEmptyObject(this Type type)
+        public static object GetEmptyObject(Type type)
         {
             return FormatterServices.GetUninitializedObject(type);
         }
 #endif
 
-        public static bool IsOneDimensionalArray(this Type type)
+        public static bool IsOneDimensionalArray(Type type)
         {
             return type.IsArray && type.GetArrayRank() == 1;
         }
 
-        public static bool IsOneDimensionalPrimitiveArray(this Type type)
+        public static bool IsOneDimensionalPrimitiveArray(Type type)
         {
-            return type.IsArray && type.GetArrayRank() == 1 && type.GetElementType().IsWirePrimitive();
+            return type.IsArray && type.GetArrayRank() == 1 && TypeEx.IsWirePrimitive(type.GetElementType());
         }
 
         private static readonly Wire.Helper.Dictionary<ByteArrayKey, Type> TypeNameLookup =
@@ -116,7 +116,7 @@ namespace Wire.Extensions
 
         private static Type GetTypeFromManifestName(Stream stream, DeserializerSession session)
         {
-            var bytes = stream.ReadLengthEncodedByteArray(session);
+            var bytes = StreamEx.ReadLengthEncodedByteArray(stream, session);
             var byteArr = ByteArrayKey.Create(bytes);
             return TypeNameLookup.GetOrAdd(byteArr, b =>
             {
@@ -140,7 +140,7 @@ namespace Wire.Extensions
             var fieldCount = stream.ReadByte();
             for (var i = 0; i < fieldCount; i++)
             {
-                var fieldName = stream.ReadLengthEncodedByteArray(session);
+                var fieldName = StreamEx.ReadLengthEncodedByteArray(stream, session);
             }
 
             session.TrackDeserializedTypeWithVersion(type, null);
@@ -153,17 +153,17 @@ namespace Wire.Extensions
             return type;
         }
 
-        public static bool IsNullable(this Type type)
+        public static bool IsNullable(Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
-        public static Type GetNullableElement(this Type type)
+        public static Type GetNullableElement(Type type)
         {
             return type.GetGenericArguments()[0];
         }
 
-        public static bool IsFixedSizeType(this Type type)
+        public static bool IsFixedSizeType(Type type)
         {
             return type == Int16Type ||
                    type == Int32Type ||
@@ -175,7 +175,7 @@ namespace Wire.Extensions
                    type == CharType;
         }
 
-        public static int GetTypeSize(this Type type)
+        public static int GetTypeSize(Type type)
         {
             if (type == Int16Type)
             {
@@ -222,7 +222,7 @@ namespace Wire.Extensions
             return part;
         }
 
-        public static string GetShortAssemblyQualifiedName(this Type self)
+        public static string GetShortAssemblyQualifiedName(Type self)
         {
             var name = self.AssemblyQualifiedName;
             return ReplaceTokens(name);

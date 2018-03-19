@@ -15,7 +15,7 @@ namespace Wire.SerializerFactories
 {
     public class ArraySerializerFactory : ValueSerializerFactory
     {
-        public override bool CanSerialize(Serializer serializer, Type type) => type.IsOneDimensionalArray();
+        public override bool CanSerialize(Serializer serializer, Type type) => TypeEx.IsOneDimensionalArray(type);
 
         public override bool CanDeserialize(Serializer serializer, Type type) => CanSerialize(serializer, type);
 
@@ -36,7 +36,7 @@ namespace Wire.SerializerFactories
 
         private static object ReadValues<T>(Stream stream, DeserializerSession session, bool preserveObjectReferences)
         {
-            var length = stream.ReadInt32(session);
+            var length = StreamEx.ReadInt32(stream, session);
             var array = new T[length];
             if (preserveObjectReferences)
             {

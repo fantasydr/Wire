@@ -37,7 +37,7 @@ namespace Wire.SerializerFactories
                 {
                     session.TrackDeserializedObject(instance);
                 }
-                var count = stream.ReadInt32(session);
+                var count = StreamEx.ReadInt32(stream, session);
                 for (var i = 0; i < count; i++)
                 {
                     var entry = (KeyValuePair<string, object>)stream.ReadObject(session);

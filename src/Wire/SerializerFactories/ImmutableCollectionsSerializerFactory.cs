@@ -98,7 +98,7 @@ namespace Wire.SerializerFactories
 
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
-                var count = stream.ReadInt32(session);
+                var count = StreamEx.ReadInt32(stream, session);
                 var items = Array.CreateInstance(elementType, count);
                 for (var i = 0; i < count; i++)
                 {
