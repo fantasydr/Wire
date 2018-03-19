@@ -18,7 +18,7 @@ namespace Wire.SerializerFactories
     {
         public override bool CanSerialize(Serializer serializer, Type type)
         {
-            return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(LinkedList<>);
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(LinkedList<>);
         }
 
         public override bool CanDeserialize(Serializer serializer, Type type)
@@ -37,7 +37,7 @@ namespace Wire.SerializerFactories
             Int32Serializer.WriteValueImpl(stream, llist.Count, session);
             foreach (var value in llist)
             {
-                stream.WriteObject(value, elementType, elementSerializer, preserveObjectReferences, session);
+                StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
             }
         }
 
@@ -51,7 +51,7 @@ namespace Wire.SerializerFactories
             }
             for (var i = 0; i < length; i++)
             {
-                var value = (T)stream.ReadObject(session);
+                var value = (T)StreamEx.ReadObject(stream, session);
                 llist.AddLast(value);
             }
             return llist;

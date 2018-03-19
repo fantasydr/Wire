@@ -20,7 +20,7 @@ namespace Wire.SerializerFactories
 
         private static bool IsDictionary(Type type)
         {
-            return type.IsConstructedGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>);
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Dictionary<,>);
         }
 
         public override bool CanDeserialize(Serializer serializer, Type type) => IsDictionary(type);

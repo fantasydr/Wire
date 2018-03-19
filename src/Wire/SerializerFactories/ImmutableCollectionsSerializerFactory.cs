@@ -88,7 +88,7 @@ namespace Wire.SerializerFactories
                 Int32Serializer.WriteValueImpl(stream, enumerable.Count, session);
                 foreach (var value in enumerable)
                 {
-                    stream.WriteObject(value, elementType, elementSerializer, preserveObjectReferences, session);
+                    StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
                 }
                 if (preserveObjectReferences)
                 {
@@ -102,7 +102,7 @@ namespace Wire.SerializerFactories
                 var items = Array.CreateInstance(elementType, count);
                 for (var i = 0; i < count; i++)
                 {
-                    var value = stream.ReadObject(session);
+                    var value = StreamEx.ReadObject(stream, session);
                     items.SetValue(value, i);
                 }
 

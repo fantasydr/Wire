@@ -83,6 +83,17 @@ namespace Wire
 
         public class Dictionary<TKey, TValue> : System.Collections.Generic.Dictionary<TKey, TValue>
         {
+            public Dictionary(System.Collections.Generic.IEqualityComparer<TKey> comparer) 
+                : base(comparer)
+            {
+
+            }
+
+            public Dictionary() : base ()
+            {
+
+            }
+
             public bool TryAdd(TKey key, TValue val)
             {
                 if (this.ContainsKey(key))

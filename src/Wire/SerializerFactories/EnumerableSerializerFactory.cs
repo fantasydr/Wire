@@ -94,7 +94,7 @@ namespace Wire.SerializerFactories
                     var items = Array.CreateInstance(elementType, count);
                     for (var i = 0; i < count; i++)
                     {
-                        var value = stream.ReadObject(session);
+                        var value = StreamEx.ReadObject(stream, session);
                         items.SetValue(value, i);
                     }
                     //HACK: this needs to be fixed, codegenerated or whatever
@@ -106,7 +106,7 @@ namespace Wire.SerializerFactories
                 {
                     for (var i = 0; i < count; i++)
                     {
-                        var value = stream.ReadObject(session);
+                        var value = StreamEx.ReadObject(stream, session);
                         add.Invoke(instance, new[] { value });
                     }
                 }
@@ -125,7 +125,7 @@ namespace Wire.SerializerFactories
                 // ReSharper disable once PossibleNullReferenceException
                 foreach (var value in enumerable)
                 {
-                    stream.WriteObject(value, elementType, elementSerializer, preserveObjectReferences, session);
+                    StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
                 }
             };
 

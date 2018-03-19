@@ -26,12 +26,16 @@ namespace Wire
             new DelegateSerializerFactory(),
             new ToSurrogateSerializerFactory(),
             new FromSurrogateSerializerFactory(),
+#if NET45
             new FSharpMapSerializerFactory(),
             new FSharpListSerializerFactory(),
+#endif
             //order is important, try dictionaries before enumerables as dicts are also enumerable
             new ExceptionSerializerFactory(),
             new ImmutableCollectionsSerializerFactory(),
+#if NET45
             new ExpandoObjectSerializerFactory(),
+#endif
             new DefaultDictionarySerializerFactory(),
             new LinkedListSerializerFactory(), 
             new DictionarySerializerFactory(),

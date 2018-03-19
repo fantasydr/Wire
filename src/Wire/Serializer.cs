@@ -8,8 +8,6 @@ using System;
 // using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Wire.Compilation;
 using Wire.Extensions;
 using Wire.Internal;
 using Wire.ValueSerializers;

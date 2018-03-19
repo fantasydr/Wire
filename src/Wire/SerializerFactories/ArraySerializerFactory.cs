@@ -30,7 +30,7 @@ namespace Wire.SerializerFactories
             Int32Serializer.WriteValueImpl(stream, array.Length, session);
             foreach (var value in array)
             {
-                stream.WriteObject(value, elementType, elementSerializer, preserveObjectReferences, session);
+                StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
             }
         }
 
@@ -44,7 +44,7 @@ namespace Wire.SerializerFactories
             }
             for (var i = 0; i < length; i++)
             {
-                var value = (T) stream.ReadObject(session);
+                var value = (T) StreamEx.ReadObject(stream, session);
                 array[i] = value;
             }
             return array;

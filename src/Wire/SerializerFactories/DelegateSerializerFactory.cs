@@ -35,8 +35,8 @@ namespace Wire.SerializerFactories
 
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
-                var target = stream.ReadObject(session);
-                var method = (MethodInfo)stream.ReadObject(session);
+                var target = StreamEx.ReadObject(stream, session);
+                var method = (MethodInfo)StreamEx.ReadObject(stream, session);
                 var del = method.CreateDelegate(type, target);
                 return del;
             };
@@ -45,9 +45,9 @@ namespace Wire.SerializerFactories
             {
                 var d = (Delegate)value;
                 var method = d.GetMethodInfo();
-                stream.WriteObjectWithManifest(d.Target, session);
+                StreamEx.WriteObjectWithManifest(stream, d.Target, session);
                 //less lookups, slightly faster
-                stream.WriteObject(method, type, methodInfoSerializer, preserveObjectReferences, session);
+                StreamEx.WriteObject(stream, method, type, methodInfoSerializer, preserveObjectReferences, session);
             };
 
             os.Initialize(Reader, Writer);

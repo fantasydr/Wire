@@ -15,6 +15,7 @@ using Wire.ValueSerializers;
 
 namespace Wire.SerializerFactories
 {
+#if NET45
     public class ExpandoObjectSerializerFactory : ValueSerializerFactory
     {
         public override bool CanSerialize(Serializer serializer, Type type) => type == typeof(ExpandoObject);
@@ -67,4 +68,5 @@ namespace Wire.SerializerFactories
             return ser;
         }
     }
+#endif
 }

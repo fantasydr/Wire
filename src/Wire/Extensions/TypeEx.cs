@@ -101,7 +101,7 @@ namespace Wire.Extensions
         private static readonly Wire.Helper.Dictionary<ByteArrayKey, Type> TypeNameLookup =
             new Wire.Helper.Dictionary<ByteArrayKey, Type>(ByteArrayKeyComparer.Instance);
 
-        public static byte[] GetTypeManifest(IReadOnlyCollection<byte[]> fieldNames)
+        public static byte[] GetTypeManifest(List<byte[]> fieldNames)
         {
             IEnumerable<byte> result = new[] {(byte) fieldNames.Count};
             foreach (var name in fieldNames)

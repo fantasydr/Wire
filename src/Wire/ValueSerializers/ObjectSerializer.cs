@@ -63,13 +63,13 @@ namespace Wire.ValueSerializers
             //initialize reader and writer with dummy handlers that wait until the serializer is fully initialized
             _writer = (stream, o, session) =>
             {
-                SpinWait.SpinUntil(() => _isInitialized);
+                // SpinWait.SpinUntil(() => _isInitialized);
                 WriteValue(stream, o, session);
             };
 
             _reader = (stream, session) =>
             {
-                SpinWait.SpinUntil(() => _isInitialized);
+                // SpinWait.SpinUntil(() => _isInitialized);
                 return ReadValue(stream, session);
             };
         }

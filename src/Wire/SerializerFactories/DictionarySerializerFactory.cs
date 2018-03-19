@@ -55,7 +55,7 @@ namespace Wire.SerializerFactories
                 var entries = new DictionaryEntry[count];
                 for (var i = 0; i < count; i++)
                 {
-                    var entry = (DictionaryEntry)stream.ReadObject(session);
+                    var entry = (DictionaryEntry)StreamEx.ReadObject(stream, session);
                     entries[i] = entry;
                 }
                 //TODO: populate dictionary
@@ -73,7 +73,7 @@ namespace Wire.SerializerFactories
                 Int32Serializer.WriteValueImpl(stream, dict.Count, session);
                 foreach (var item in dict)
                 {
-                    stream.WriteObject(item, typeof(DictionaryEntry), elementSerializer, serializer.Options.PreserveObjectReferences, session);
+                    StreamEx.WriteObject(stream, item, typeof(DictionaryEntry), elementSerializer, serializer.Options.PreserveObjectReferences, session);
                     // elementSerializer.WriteValue(stream,item,session);
                 }
             };

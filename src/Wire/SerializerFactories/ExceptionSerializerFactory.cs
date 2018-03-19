@@ -44,11 +44,11 @@ namespace Wire.SerializerFactories
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 var exception = Activator.CreateInstance(type);
-                var className = stream.ReadString(session);
-                var message = stream.ReadString(session);
-                var remoteStackTraceString = stream.ReadString(session);
-                var stackTraceString = stream.ReadString(session);
-                var innerException = stream.ReadObject(session);
+                var className = StreamEx.ReadString(stream, session);
+                var message = StreamEx.ReadString(stream, session);
+                var remoteStackTraceString = StreamEx.ReadString(stream, session);
+                var stackTraceString = StreamEx.ReadString(stream, session);
+                var innerException = StreamEx.ReadObject(stream, session);
 
                 _className.SetValue(exception, className);
                 _message.SetValue(exception, message);
@@ -69,7 +69,7 @@ namespace Wire.SerializerFactories
                 StringSerializer.WriteValueImpl(stream, message, session);
                 StringSerializer.WriteValueImpl(stream, remoteStackTraceString, session);
                 StringSerializer.WriteValueImpl(stream, stackTraceString, session);
-                stream.WriteObjectWithManifest(innerException, session);
+                StreamEx.WriteObjectWithManifest(stream, innerException, session);
             };
 
             exceptionSerializer.Initialize(Reader, Writer);

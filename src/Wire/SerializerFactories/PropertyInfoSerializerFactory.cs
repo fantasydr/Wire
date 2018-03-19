@@ -33,8 +33,8 @@ namespace Wire.SerializerFactories
 
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
-                var name = stream.ReadString(session);
-                var owner = stream.ReadObject(session) as Type;
+                var name = StreamEx.ReadString(stream, session);
+                var owner = StreamEx.ReadObject(stream, session) as Type;
 
 #if NET45
                 var property = owner.GetTypeInfo()
@@ -51,7 +51,7 @@ namespace Wire.SerializerFactories
                 var name = property.Name;
                 var owner = property.DeclaringType;
                 StringSerializer.WriteValueImpl(stream, name, session);
-                stream.WriteObjectWithManifest(owner, session);
+                StreamEx.WriteObjectWithManifest(stream, owner, session);
             };
 
             os.Initialize(Reader, Writer);

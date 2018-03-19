@@ -7,7 +7,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using Wire.Compilation;
 using Wire.Internal;
 
 namespace Wire.ValueSerializers
@@ -32,17 +31,6 @@ namespace Wire.ValueSerializers
         {
             _errorMessage = msg;
             _invalidType = t;
-        }
-
-        public override int EmitReadValue([NotNull] ICompiler<ObjectReader> c, int stream, int session,
-            [NotNull] FieldInfo field)
-        {
-            throw new UnsupportedTypeException(_invalidType, _errorMessage);
-        }
-
-        public override void EmitWriteValue(ICompiler<ObjectWriter> c, int stream, int fieldValue, int session)
-        {
-            throw new UnsupportedTypeException(_invalidType, _errorMessage);
         }
 
         public override object ReadValue([NotNull] Stream stream, [NotNull] DeserializerSession session)

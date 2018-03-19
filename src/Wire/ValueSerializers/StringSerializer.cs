@@ -25,7 +25,7 @@ namespace Wire.ValueSerializers
 
         public static string ReadValueImpl(Stream stream, DeserializerSession session)
         {
-            return stream.ReadString(session);
+            return StreamEx.ReadString(stream, session);
         }
 
         public override void WriteManifest(Stream stream, SerializerSession session)
