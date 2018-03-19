@@ -28,7 +28,7 @@ namespace Wire.ValueSerializers
 
         public ObjectSerializer(Type type)
         {
-            Type = type ?? throw new ArgumentNullException(nameof(type));
+            Type = type ?? throw new ArgumentNullException("type");
             //TODO: remove version info
             var typeName = type.GetShortAssemblyQualifiedName();
             // ReSharper disable once PossibleNullReferenceException

@@ -62,12 +62,12 @@ namespace Wire.SerializerFactories
         {
             var arraySerializer = new ObjectSerializer(type);
 
-            var elementType = type.GetTypeInfo().GetGenericArguments()[0];
+            var elementType = type.GetGenericArguments()[0];
             var elementSerializer = serializer.GetSerializerByType(elementType);
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
 
-            var readGeneric = GetType().GetTypeInfo().GetMethod(nameof(ReadValues), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
-            var writeGeneric = GetType().GetTypeInfo().GetMethod(nameof(WriteValues), BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
+            var readGeneric = GetType().GetMethod("ReadValues", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
+            var writeGeneric = GetType().GetMethod("WriteValues", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
 
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {

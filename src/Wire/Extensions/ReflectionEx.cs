@@ -28,7 +28,7 @@ namespace Wire.Extensions
         {
             if (type == null)
             {
-                throw new ArgumentNullException(nameof(type));
+                throw new ArgumentNullException("type");
             }
 
             var fieldInfos = new List<FieldInfo>();

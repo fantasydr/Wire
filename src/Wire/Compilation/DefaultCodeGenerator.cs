@@ -17,7 +17,7 @@ namespace Wire.Compilation
 {
     public class DefaultCodeGenerator : ICodeGenerator
     {
-        public const string PreallocatedByteBuffer = nameof(PreallocatedByteBuffer);
+        public const string PreallocatedByteBuffer = "PreallocatedByteBuffer";
 
         public void BuildSerializer([NotNull] Serializer serializer, [NotNull] ObjectSerializer objectSerializer)
         {
@@ -45,7 +45,7 @@ namespace Wire.Compilation
             if (serializer.Options.PreserveObjectReferences)
             {
                 var trackDeserializedObjectMethod =
-                    typeof(DeserializerSession).GetMethod(nameof(DeserializerSession.TrackDeserializedObject));
+                    typeof(DeserializerSession).GetMethod("DeserializerSession.TrackDeserializedObject");
 
                 c.EmitCall(trackDeserializedObjectMethod, session, target);
             }
@@ -76,7 +76,7 @@ namespace Wire.Compilation
             if (preallocatedBufferSize > 0)
             {
                 EmitPreallocatedBuffer(c, preallocatedBufferSize, session,
-                                       typeof(DeserializerSession).GetMethod(nameof(DeserializerSession.GetBuffer)));
+                                       typeof(DeserializerSession).GetMethod("DeserializerSession.GetBuffer"));
             }
 
             for (var i = 0; i < fields.Length; i++)
@@ -95,7 +95,7 @@ namespace Wire.Compilation
                 }
                 else
                 {
-                    var method = typeof(StreamEx).GetMethod(nameof(StreamEx.ReadObject));
+                    var method = typeof(StreamEx).GetMethod("StreamEx.ReadObject");
                     read = c.StaticCall(method, stream, session);
                     read = c.Convert(read, field.FieldType);
                 }
@@ -143,7 +143,7 @@ namespace Wire.Compilation
             if (serializer.Options.PreserveObjectReferences)
             {
                 var method =
-                    typeof(SerializerSession).GetMethod(nameof(SerializerSession.TrackSerializedObject));
+                    typeof(SerializerSession).GetMethod("SerializerSession.TrackSerializedObject");
 
                 c.EmitCall(method, session, target);
             }
@@ -189,7 +189,7 @@ namespace Wire.Compilation
                     var vs = c.Constant(valueSerializer);
                     var vt = c.Constant(valueType);
 
-                    var method = typeof(StreamEx).GetMethod(nameof(StreamEx.WriteObject));
+                    var method = typeof(StreamEx).GetMethod("StreamEx.WriteObject");
 
                     c.EmitStaticCall(method, stream, converted, vt, vs, preserveReferences, session);
                 }

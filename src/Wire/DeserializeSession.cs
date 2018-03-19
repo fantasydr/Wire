@@ -82,7 +82,7 @@ namespace Wire
             }
             if (_identifierToType == null)
             {
-                throw new ArgumentException(nameof(typeId));
+                throw new ArgumentException("typeId");
             }
 
             return _identifierToType[typeId - _offset];

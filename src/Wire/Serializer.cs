@@ -145,7 +145,7 @@ namespace Wire
         {
             if (obj == null)
             {
-                throw new ArgumentNullException(nameof(obj));
+                throw new ArgumentNullException("obj");
             }
 
             var type = obj.GetType();
@@ -158,7 +158,7 @@ namespace Wire
         {
             if (obj == null)
             {
-                throw new ArgumentNullException(nameof(obj));
+                throw new ArgumentNullException("obj");
             }
             var session = GetSerializerSession();
 

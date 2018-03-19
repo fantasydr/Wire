@@ -134,7 +134,7 @@ namespace Wire.Compilation
 
         public int WriteReadonlyField(FieldInfo field, int target, int value)
         {
-            var method = typeof(FieldInfo).GetMethod(nameof(FieldInfo.SetValue), new[] {typeof(object), typeof(object)});
+            var method = typeof(FieldInfo).GetMethod("FieldInfo.SetValue", new[] {typeof(object), typeof(object)});
             var fld = Constant(field);
             var valueToObject = Convert<object>(value);
             return Call(method, fld, target, valueToObject);
