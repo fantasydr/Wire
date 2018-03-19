@@ -6,7 +6,7 @@
 
 using System;
 // using System.Collections.Concurrent;
-// using System.Linq;
+using System.Linq;
 using Wire.ValueSerializers;
 
 namespace Wire.SerializerFactories
@@ -28,6 +28,7 @@ namespace Wire.SerializerFactories
                 .Options
                 .Surrogates
                 .FirstOrDefault(s => s.IsSurrogateFor(type));
+            
             // ReSharper disable once PossibleNullReferenceException
             var objectSerializer = new ObjectSerializer(surrogate.To);
             var toSurrogateSerializer = new ToSurrogateSerializer(surrogate.ToSurrogate);
