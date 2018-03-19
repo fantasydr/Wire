@@ -7,7 +7,7 @@
 using System;
 // using System.Collections.Concurrent;
 using System.IO;
-using System.Linq;
+// using System.Linq;
 using System.Reflection;
 using Wire.Extensions;
 using Wire.ValueSerializers;
@@ -34,8 +34,8 @@ namespace Wire.SerializerFactories
 
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
-                var owner = stream.ReadObject(session) as Type;
-                var arguments = stream.ReadObject(session) as Type[];
+                var owner = StreamEx.ReadObject(stream, session) as Type;
+                var arguments = StreamEx.ReadObject(stream, session) as Type[];
 
 #if NET45
                 var ctor = owner.GetConstructor(arguments);
@@ -50,8 +50,8 @@ namespace Wire.SerializerFactories
                 var ctor = (ConstructorInfo)obj;
                 var owner = ctor.DeclaringType;
                 var arguments = ctor.GetParameters().Select(p => p.ParameterType).ToArray();
-                stream.WriteObjectWithManifest(owner, session);
-                stream.WriteObjectWithManifest(arguments, session);
+                StreamEx.WriteObjectWithManifest(stream, owner, session);
+                StreamEx.WriteObjectWithManifest(stream, arguments, session);
             };
 
             os.Initialize(Reader, Writer);

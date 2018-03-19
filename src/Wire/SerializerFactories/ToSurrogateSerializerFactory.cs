@@ -6,7 +6,7 @@
 
 using System;
 // using System.Collections.Concurrent;
-using System.Linq;
+// using System.Linq;
 using Wire.ValueSerializers;
 
 namespace Wire.SerializerFactories
