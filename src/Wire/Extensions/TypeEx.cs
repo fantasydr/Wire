@@ -69,16 +69,19 @@ namespace Wire.Extensions
         }
 
 #if !NET45
-    //HACK: the GetUnitializedObject actually exists in .NET Core, its just not public
-        private static readonly Func<Type, object> getUninitializedObjectDelegate = (Func<Type, object>)
-            typeof(string)
-                .Assembly
-                .GetType("System.Runtime.Serialization.FormatterServices")
-                ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
-                ?.CreateDelegate(typeof(Func<Type, object>));
+        //HACK: the GetUnitializedObject actually exists in .NET Core, its just not public
+        private static Func<Type, object> getUninitializedObjectDelegate;
 
         public static object GetEmptyObject(Type type)
         {
+            if(getUninitializedObjectDelegate == null)
+            {
+                var mi = typeof(string)
+                .Assembly
+                .GetType("System.Runtime.Serialization.FormatterServices")
+                ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static);
+                getUninitializedObjectDelegate = (Func<Type, object>)Delegate.CreateDelegate(typeof(Func<Type, object>), mi);
+            }
             return getUninitializedObjectDelegate(type);
         }
 #else

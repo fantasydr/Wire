@@ -72,7 +72,8 @@ namespace Wire.ValueSerializers
             elementSerializer.WriteManifest(stream, session); //write array element type
             // ReSharper disable once PossibleNullReferenceException
             //TODO fix this
-            WriteValues((dynamic) value, stream, elementSerializer, session);
+            throw new NotImplementedException();
+            //WriteValues((dynamic) value, stream, elementSerializer, session);
         }
 
         private static void WriteValues<T>(T[] array, Stream stream, ValueSerializer elementSerializer,

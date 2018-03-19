@@ -13,6 +13,7 @@ using Wire.ValueSerializers;
 
 namespace Wire.SerializerFactories
 {
+#if NET45
     public class DelegateSerializerFactory : ValueSerializerFactory
     {
         public override bool CanSerialize(Serializer serializer, Type type)
@@ -54,4 +55,5 @@ namespace Wire.SerializerFactories
             return os;
         }
     }
+#endif
 }

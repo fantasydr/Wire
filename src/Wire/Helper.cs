@@ -102,6 +102,16 @@ namespace Wire
                 this.Add(key, val);
                 return true;
             }
+
+            public TValue GetOrAdd(TKey key, System.Func<TKey, TValue> valueFactory)
+            {
+                if (this.ContainsKey(key))
+                    return this[key];
+
+                TValue val = valueFactory(key);
+                this.Add(key, val);
+                return val;
+            }
         }
     }
 }

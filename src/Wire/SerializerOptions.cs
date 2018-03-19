@@ -23,7 +23,9 @@ namespace Wire
             new PropertyInfoSerializerFactory(),
             new ConstructorInfoSerializerFactory(),
             new FieldInfoSerializerFactory(),
+#if NET45
             new DelegateSerializerFactory(),
+#endif
             new ToSurrogateSerializerFactory(),
             new FromSurrogateSerializerFactory(),
 #if NET45
