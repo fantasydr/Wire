@@ -41,13 +41,12 @@ namespace Wire.SerializerFactories
         private static Type GetEnumerableType(Type type)
         {
             return type
-                .GetTypeInfo()
                 .GetInterfaces()
                 .Where(
                     intType =>
-                        intType.GetTypeInfo().IsGenericType &&
-                        intType.GetTypeInfo().GetGenericTypeDefinition() == typeof(IEnumerable<>))
-                .Select(intType => intType.GetTypeInfo().GetGenericArguments()[0])
+                        intType.IsGenericType &&
+                        intType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+                .Select(intType => intType.GetGenericArguments()[0])
                 .FirstOrDefault();
         }
 
@@ -68,10 +67,10 @@ namespace Wire.SerializerFactories
                 Type.GetType(
                     ImmutableCollectionsNamespace + "." + typeName + ", " + ImmutableCollectionsAssembly, true);
 
-            var genericTypes = elementType.GetTypeInfo().IsGenericType
-                ? elementType.GetTypeInfo().GetGenericArguments()
+            var genericTypes = elementType.IsGenericType
+                ? elementType.GetGenericArguments()
                 : new[] {elementType};
-            var createRange = creatorType.GetTypeInfo().GetMethods(BindingFlags.Public | BindingFlags.Static)
+            var createRange = creatorType.GetMethods(BindingFlags.Public | BindingFlags.Static)
                 .First(methodInfo => methodInfo.Name == "CreateRange" && methodInfo.GetParameters().Length == 1)
                 .MakeGenericMethod(genericTypes);
 

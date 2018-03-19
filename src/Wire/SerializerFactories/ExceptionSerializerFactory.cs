@@ -15,7 +15,7 @@ namespace Wire.SerializerFactories
 {
     public class ExceptionSerializerFactory : ValueSerializerFactory
     {
-        private static readonly TypeInfo ExceptionTypeInfo = typeof(Exception).GetTypeInfo();
+        private static readonly Type ExceptionTypeInfo = typeof(Exception);
         private readonly FieldInfo _className;
         private readonly FieldInfo _innerException;
         private readonly FieldInfo _message;
@@ -32,7 +32,7 @@ namespace Wire.SerializerFactories
         }
 
         public override bool CanSerialize(Serializer serializer, Type type)
-            => ExceptionTypeInfo.IsAssignableFrom(type.GetTypeInfo());
+            => ExceptionTypeInfo.IsAssignableFrom(type);
 
         public override bool CanDeserialize(Serializer serializer, Type type) => CanSerialize(serializer, type);
 

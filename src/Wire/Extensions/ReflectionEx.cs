@@ -22,7 +22,7 @@ namespace Wire.Extensions
 
     public static class ReflectionEx
     {
-        public static readonly Assembly CoreAssembly = typeof(int).GetTypeInfo().Assembly;
+        public static readonly Assembly CoreAssembly = typeof(int).Assembly;
 
         public static FieldInfo[] GetFieldInfosForType(this Type type)
         {
@@ -37,7 +37,6 @@ namespace Wire.Extensions
             {
                 var tfields =
                     current
-                        .GetTypeInfo()
                         .GetFields(BindingFlagsEx.All)
 #if NET45
                         .Where(f => !f.IsDefined(typeof(NonSerializedAttribute)))
@@ -48,7 +47,7 @@ namespace Wire.Extensions
                         .Where(f => f.Name != "_syncRoot"); //HACK: ignore these 
 
                 fieldInfos.AddRange(tfields);
-                current = current.GetTypeInfo().BaseType;
+                current = current.BaseType;
             }
             var fields = fieldInfos.OrderBy(f => f.Name).ToArray();
             return fields;

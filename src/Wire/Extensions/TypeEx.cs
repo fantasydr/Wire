@@ -72,10 +72,8 @@ namespace Wire.Extensions
     //HACK: the GetUnitializedObject actually exists in .NET Core, its just not public
         private static readonly Func<Type, object> getUninitializedObjectDelegate = (Func<Type, object>)
             typeof(string)
-                .GetTypeInfo()
                 .Assembly
                 .GetType("System.Runtime.Serialization.FormatterServices")
-                ?.GetTypeInfo()
                 ?.GetMethod("GetUninitializedObject", BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Static)
                 ?.CreateDelegate(typeof(Func<Type, object>));
 
@@ -157,12 +155,12 @@ namespace Wire.Extensions
 
         public static bool IsNullable(this Type type)
         {
-            return type.GetTypeInfo().IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
 
         public static Type GetNullableElement(this Type type)
         {
-            return type.GetTypeInfo().GetGenericArguments()[0];
+            return type.GetGenericArguments()[0];
         }
 
         public static bool IsFixedSizeType(this Type type)
