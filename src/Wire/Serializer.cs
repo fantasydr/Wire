@@ -11,6 +11,7 @@ using System.Linq;
 using Wire.Extensions;
 using Wire.Internal;
 using Wire.ValueSerializers;
+using Wire.Compilation;
 
 namespace Wire
 {
@@ -26,7 +27,7 @@ namespace Wire
         private readonly Wire.Helper.Dictionary<Type, ValueSerializer> _serializers =
             new Wire.Helper.Dictionary<Type, ValueSerializer>();
 
-        public readonly ICodeGenerator CodeGenerator = new DefaultCodeGenerator();
+        public readonly ICodeGenerator CodeGenerator = new NaiveCodeGenerator();
         public readonly SerializerOptions Options;
 
         public Serializer() : this(new SerializerOptions())

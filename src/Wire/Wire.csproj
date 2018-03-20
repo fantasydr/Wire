@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Compilation\NaiveCodeGenerator.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="DeserializeSession.cs" />
     <Compile Include="Extensions\ReflectionEx.cs" />
