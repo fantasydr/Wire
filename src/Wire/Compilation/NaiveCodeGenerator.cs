@@ -28,18 +28,6 @@ namespace Wire.Compilation
             objectSerializer.Initialize(reader, writer, preallocatedBufferSize);
         }
 
-        public static object GetNewObject(Type t)
-        {
-            try
-            {
-                return t.GetConstructor(new Type[] { }).Invoke(new object[] { });
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
         private ObjectReader GetFieldsReader([NotNull] Serializer serializer, [NotNull] FieldInfo[] fields,
                                              [NotNull] Type type)
         {
@@ -51,7 +39,7 @@ namespace Wire.Compilation
 
             return delegate (Stream stream, DeserializerSession session)
             {
-                object target = GetNewObject(type);
+                object target = Activator.CreateInstance(type);
                 var PreallocatedByteBuffer = session.GetBuffer(preallocatedBufferSize);
 
                 for (var i = 0; i < fields.Length; i++)
@@ -109,7 +97,7 @@ namespace Wire.Compilation
                     //if the type is one of our special primitives, ignore manifest as the content will always only be of this type
                     if (!serializer.Options.VersionTolerance && TypeEx.IsWirePrimitive(field.FieldType))
                     {
-                        field.SetValue(obj, readField);
+                        valueSerializer.WriteValue(stream, readField, session);
                     }
                     else
                     {

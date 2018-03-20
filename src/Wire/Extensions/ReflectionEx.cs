@@ -17,7 +17,7 @@ namespace Wire.Extensions
 {
     public static class BindingFlagsEx
     {
-        public const BindingFlags All = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+        public const BindingFlags All = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.DeclaredOnly;
     }
 
     public static class ReflectionEx
@@ -40,6 +40,8 @@ namespace Wire.Extensions
                         .GetFields(BindingFlagsEx.All)
 #if NET45
                         .Where(f => !f.IsDefined(typeof(NonSerializedAttribute)))
+#else
+                        .Where(f => !f.IsDefined(typeof(NonSerializedAttribute), false))
 #endif
                         .Where(f => !f.IsStatic)
                         .Where(f => f.FieldType != typeof(IntPtr))
