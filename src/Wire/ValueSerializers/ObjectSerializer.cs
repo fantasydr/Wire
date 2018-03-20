@@ -31,6 +31,8 @@ namespace Wire.ValueSerializers
             if(type == null)
                 throw new ArgumentNullException("type");
 
+            Type = type;
+
             //TODO: remove version info
             var typeName = TypeEx.GetShortAssemblyQualifiedName(type);
             // ReSharper disable once PossibleNullReferenceException
