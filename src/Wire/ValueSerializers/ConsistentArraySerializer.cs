@@ -71,29 +71,26 @@ namespace Wire.ValueSerializers
             var elementSerializer = session.Serializer.GetSerializerByType(elementType);
             elementSerializer.WriteManifest(stream, session); //write array element type
             // ReSharper disable once PossibleNullReferenceException
-            //TODO fix this
-            throw new NotImplementedException();
-            //WriteValues((dynamic) value, stream, elementSerializer, session);
-        }
 
-        private static void WriteValues<T>(T[] array, Stream stream, ValueSerializer elementSerializer,
-            SerializerSession session)
-        {
-            Int32Serializer.WriteValueImpl(stream, array.Length, session);
-            if (TypeEx.IsFixedSizeType(typeof(T)))
+            //TODO fix this
+            Array array = (Array)value;
+            if (TypeEx.IsFixedSizeType(elementType))
             {
-                var size = TypeEx.GetTypeSize(typeof(T));
-                var result = new byte[array.Length*size];
+                Int32Serializer.WriteValueImpl(stream, array.Length, session);
+                var size = TypeEx.GetTypeSize(elementType);
+                var result = new byte[array.Length * size];
                 Buffer.BlockCopy(array, 0, result, 0, result.Length);
                 StreamEx.Write(stream, result);
             }
             else
             {
-                foreach (var value in array)
+                Int32Serializer.WriteValueImpl(stream, array.Length, session);
+                foreach (var element in array)
                 {
-                    elementSerializer.WriteValue(stream, value, session);
+                    elementSerializer.WriteValue(stream, element, session);
                 }
             }
+            //WriteValues((dynamic) value, stream, elementSerializer, session);
         }
     }
 }
