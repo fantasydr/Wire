@@ -94,7 +94,7 @@ namespace Wire
             AddValueSerializer<DateTime>(DateTimeSerializer.Instance);
 
             AddValueSerializer<Type>(TypeSerializer.Instance);
-            AddValueSerializer(TypeSerializer.Instance, TypeEx.RuntimeType);
+            // AddValueSerializer(TypeSerializer.Instance, TypeEx.RuntimeType); // Unity do not have this
         }
 
         private void AddValueSerializer(ValueSerializer instance, Type type)
