@@ -26,37 +26,6 @@ namespace Wire.SerializerFactories
             return CanSerialize(serializer, type);
         }
 
-        private static void WriteValues<T>(LinkedList<T> llist, Stream stream, Type elementType, ValueSerializer elementSerializer,
-    SerializerSession session, bool preserveObjectReferences)
-        {
-            if (preserveObjectReferences)
-            {
-                session.TrackSerializedObject(llist);
-            }
-            
-            Int32Serializer.WriteValueImpl(stream, llist.Count, session);
-            foreach (var value in llist)
-            {
-                StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
-            }
-        }
-
-        private static object ReadValues<T>(Stream stream, DeserializerSession session, bool preserveObjectReferences)
-        {
-            var length = StreamEx.ReadInt32(stream, session);
-            var llist = new LinkedList<T>();
-            if (preserveObjectReferences)
-            {
-                session.TrackDeserializedObject(llist);
-            }
-            for (var i = 0; i < length; i++)
-            {
-                var value = (T)StreamEx.ReadObject(stream, session);
-                llist.AddLast(value);
-            }
-            return llist;
-        }
-
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
             Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
@@ -66,20 +35,42 @@ namespace Wire.SerializerFactories
             var elementSerializer = serializer.GetSerializerByType(elementType);
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
 
-            var readGeneric = GetType().GetMethod("ReadValues", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
-            var writeGeneric = GetType().GetMethod("WriteValues", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
+            // TODO: optimize for primitive types
+            var llistType = typeof(LinkedList<>).MakeGenericType(elementType);
+            var addLast = llistType.GetMethod("AddLast");
 
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 //Stream stream, DeserializerSession session, bool preserveObjectReferences
-                var res = readGeneric.Invoke(null, new object[] { stream, session, preserveObjectReferences });
-                return res;
+                var length = StreamEx.ReadInt32(stream, session);
+                var llist = Activator.CreateInstance(llistType);
+                if (preserveObjectReferences)
+                {
+                    session.TrackDeserializedObject(llist);
+                }
+                var param = new object[1];
+                for (var i = 0; i < length; i++)
+                {
+                    param[0] = StreamEx.ReadObject(stream, session);
+                    addLast.Invoke(llist, param);
+                }
+                return llist;
             };
 
             ObjectWriter Writer = delegate (Stream stream, object arr, SerializerSession session)
             {
                 //T[] array, Stream stream, Type elementType, ValueSerializer elementSerializer, SerializerSession session, bool preserveObjectReferences
-                writeGeneric.Invoke(null, new[] { arr, stream, elementType, elementSerializer, session, preserveObjectReferences });
+                if (preserveObjectReferences)
+                {
+                    session.TrackSerializedObject(arr);
+                }
+
+                var llist = arr as System.Collections.ICollection;
+                Int32Serializer.WriteValueImpl(stream, llist.Count, session);
+                foreach (var value in llist)
+                {
+                    StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
+                }
             };
 
             arraySerializer.Initialize(Reader, Writer);

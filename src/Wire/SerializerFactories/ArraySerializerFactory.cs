@@ -19,37 +19,6 @@ namespace Wire.SerializerFactories
 
         public override bool CanDeserialize(Serializer serializer, Type type) => CanSerialize(serializer, type);
 
-        private static void WriteValues<T>(T[] array, Stream stream, Type elementType, ValueSerializer elementSerializer,
-            SerializerSession session, bool preserveObjectReferences)
-        {
-            if (preserveObjectReferences)
-            {
-                session.TrackSerializedObject(array);
-            }
-
-            Int32Serializer.WriteValueImpl(stream, array.Length, session);
-            foreach (var value in array)
-            {
-                StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
-            }
-        }
-
-        private static object ReadValues<T>(Stream stream, DeserializerSession session, bool preserveObjectReferences)
-        {
-            var length = StreamEx.ReadInt32(stream, session);
-            var array = new T[length];
-            if (preserveObjectReferences)
-            {
-                session.TrackDeserializedObject(array);
-            }
-            for (var i = 0; i < length; i++)
-            {
-                var value = (T) StreamEx.ReadObject(stream, session);
-                array[i] = value;
-            }
-            return array;
-        }
-
         public override ValueSerializer BuildSerializer(Serializer serializer, Type type,
             Wire.Helper.Dictionary<Type, ValueSerializer> typeMapping)
         {
@@ -59,20 +28,37 @@ namespace Wire.SerializerFactories
             var elementSerializer = serializer.GetSerializerByType(elementType);
             var preserveObjectReferences = serializer.Options.PreserveObjectReferences;
 
-            var readGeneric = GetType().GetMethod("ReadValues", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
-            var writeGeneric = GetType().GetMethod("WriteValues", BindingFlags.NonPublic | BindingFlags.Static).MakeGenericMethod(elementType);
-
             ObjectReader Reader = delegate (Stream stream, DeserializerSession session)
             {
                 //Stream stream, DeserializerSession session, bool preserveObjectReferences
-                var res = readGeneric.Invoke(null, new object[] { stream, session, preserveObjectReferences });
-                return res;
+                var length = StreamEx.ReadInt32(stream, session);
+                var array = Array.CreateInstance(elementType, length);
+                if (preserveObjectReferences)
+                {
+                    session.TrackDeserializedObject(array);
+                }
+                for (var i = 0; i < length; i++)
+                {
+                    var value = StreamEx.ReadObject(stream, session);
+                    array.SetValue(value, i);
+                }
+                return array;
             };
 
             ObjectWriter Writer = delegate (Stream stream, object arr, SerializerSession session)
             {
                 //T[] array, Stream stream, Type elementType, ValueSerializer elementSerializer, SerializerSession session, bool preserveObjectReferences
-                writeGeneric.Invoke(null, new[] { arr, stream, elementType, elementSerializer, session, preserveObjectReferences });
+                if (preserveObjectReferences)
+                {
+                    session.TrackSerializedObject(arr);
+                }
+
+                Array array = arr as Array;
+                Int32Serializer.WriteValueImpl(stream, array.Length, session);
+                foreach (var value in array)
+                {
+                    StreamEx.WriteObject(stream, value, elementType, elementSerializer, preserveObjectReferences, session);
+                }
             };
 
             arraySerializer.Initialize(Reader, Writer);

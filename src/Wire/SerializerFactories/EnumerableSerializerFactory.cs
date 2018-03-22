@@ -88,7 +88,7 @@ namespace Wire.SerializerFactories
                 }
 
                 var count = StreamEx.ReadInt32(stream, session);
-
+                var param = new object[1];
                 if (addRange != null)
                 {
                     var items = Array.CreateInstance(elementType, count);
@@ -98,16 +98,16 @@ namespace Wire.SerializerFactories
                         items.SetValue(value, i);
                     }
                     //HACK: this needs to be fixed, codegenerated or whatever
-
-                    addRange.Invoke(instance, new object[] { items });
+                    param[0] = items;
+                    addRange.Invoke(instance, param);
                     return instance;
                 }
                 if (add != null)
                 {
                     for (var i = 0; i < count; i++)
                     {
-                        var value = StreamEx.ReadObject(stream, session);
-                        add.Invoke(instance, new[] { value });
+                        param[0] = StreamEx.ReadObject(stream, session);
+                        add.Invoke(instance, param);
                     }
                 }
 
