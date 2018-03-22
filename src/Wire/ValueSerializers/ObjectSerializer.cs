@@ -21,7 +21,7 @@ namespace Wire.ValueSerializers
         private readonly byte[] _manifest;
         private readonly byte[] _manifestWithVersionInfo;
 
-        private volatile bool _isInitialized;
+        //private volatile bool _isInitialized;
         int _preallocatedBufferSize;
         private ObjectReader _reader;
         private ObjectWriter _writer;
@@ -112,7 +112,7 @@ namespace Wire.ValueSerializers
             _preallocatedBufferSize = preallocatedBufferSize;
             _reader = reader;
             _writer = writer;
-            _isInitialized = true;
+            //_isInitialized = true;
         }
     }
 }
