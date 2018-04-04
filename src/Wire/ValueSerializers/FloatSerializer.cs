@@ -7,6 +7,7 @@
 using System;
 using System.IO;
 using Wire.Internal;
+using Wire.Extensions;
 
 namespace Wire.ValueSerializers
 {
@@ -28,10 +29,22 @@ namespace Wire.ValueSerializers
             stream.Write(bytes, 0, Size);
         }
 
+        public static void WriteValueImpl(Stream stream, float i, SerializerSession session)
+        {
+            var bytes = session.GetBuffer(Size);
+            WriteValueImpl(stream, i, bytes);
+        }
+
         public static float ReadValueImpl(Stream stream, byte[] bytes)
         {
             stream.Read(bytes, 0, Size);
             return BitConverter.ToSingle(bytes, 0);
+        }
+
+        public static float ReadValueImpl(Stream stream, DeserializerSession session)
+        {
+            var buffer = session.GetBuffer(Size);
+            return ReadValueImpl(stream, buffer);
         }
     }
 }
