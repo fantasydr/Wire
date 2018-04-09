@@ -20,6 +20,13 @@ namespace Wire
         private int _nextObjectId;
         private LinkedList<Type> _trackedTypes;
 
+        public void Reset()
+        {
+            if (_objects != null) _objects.Clear();
+            _nextObjectId = 0;
+            _trackedTypes.Clear();
+        }
+
         public SerializerSession(Serializer serializer)
         {
             Serializer = serializer;

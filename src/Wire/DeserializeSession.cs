@@ -26,6 +26,13 @@ namespace Wire
         private byte[] _buffer;
         private IntToTypeLookup _identifierToType;
 
+        public void Reset()
+        {
+            if (_objectById != null) _objectById.Clear();
+            if (_versionInfoByType != null) _versionInfoByType.Clear();
+            _identifierToType.Clear();
+        }
+
         public DeserializerSession([NotNull] Serializer serializer)
         {
             Serializer = serializer;
