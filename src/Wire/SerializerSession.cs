@@ -24,7 +24,7 @@ namespace Wire
         {
             if (_objects != null) _objects.Clear();
             _nextObjectId = 0;
-            _trackedTypes.Clear();
+            if(_trackedTypes != null) _trackedTypes.Clear();
         }
 
         public SerializerSession(Serializer serializer)

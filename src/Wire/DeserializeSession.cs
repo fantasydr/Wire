@@ -30,7 +30,7 @@ namespace Wire
         {
             if (_objectById != null) _objectById.Clear();
             if (_versionInfoByType != null) _versionInfoByType.Clear();
-            _identifierToType.Clear();
+            if(_identifierToType != null) _identifierToType.Clear();
         }
 
         public DeserializerSession([NotNull] Serializer serializer)
